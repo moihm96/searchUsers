@@ -11,8 +11,8 @@ import {
 } from 'react-native';
 
 import {connect} from 'react-redux';
-import {reposFetch}  from './actions/UsersAction';
-import Details from './Details';
+import {reposFetch}  from '../actions/UsersAction';
+import Details from '../components/Details';
 
 const {width, height} = Dimensions.get('window');
 

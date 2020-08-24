@@ -4,10 +4,10 @@ import { View, Text } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
-import UserList from './UserList';
-import UserItem from './UserItem';
-import Repo from './Repo';
-import FollowerList from './FollowerList'
+import UserList from './containers/UserList';
+import UserItem from './components/UserItem';
+import Repo from './containers/Repo';
+import FollowerList from './containers/FollowerList'
 
 const Stack = createStackNavigator();
 

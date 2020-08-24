@@ -14,7 +14,7 @@ import { Avatar } from 'react-native-elements';
 
 const {width, height} = Dimensions.get('window');
 import {connect} from 'react-redux';
-import {usersFetch} from './actions/UsersAction';
+import {usersFetch} from '../actions/UsersAction';
 
 class UserList extends Component{
   constructor(props){
