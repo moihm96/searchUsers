@@ -75,7 +75,7 @@ export default class UserItem extends Component{
                         head = {"Company: "}
                         content = {user.company}
                     />
-                    <TouchableHighlight style={{ justifyContent: "center", padding: 20}} onPress={()=> this.props.navigation.navigate('Followers',{ item: item})}>
+                    <TouchableHighlight style={{ justifyContent: "center", padding: 20}} onPress={()=> this.props.navigation.navigate('Followers',{ item: this.state.user})}>
                         <View style={{alignItems: "center", backgroundColor: "#7CE3B5", padding: 10}}>
                             <Details
                                 head={"FOLLOWERS"}
@@ -84,7 +84,7 @@ export default class UserItem extends Component{
                         </View> 
                     </TouchableHighlight >
                     
-                    <TouchableHighlight style={{ justifyContent: "center", padding: 20}} onPress={()=> this.props.navigation.navigate('Repo',{ item: item})}>
+                    <TouchableHighlight style={{ justifyContent: "center", padding: 20}} onPress={()=> this.props.navigation.navigate('Repo',{ item: this.state.user})}>
                         <View style={{alignItems: "center", backgroundColor: "#7CE3B5", padding: 10}}>
                             <Details
                                 head={"REPOSITORIES: "}

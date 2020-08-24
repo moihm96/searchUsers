@@ -10,10 +10,14 @@ import {
   Dimensions
 } from 'react-native';
 
+import {connect} from 'react-redux';
+import {reposFetch}  from './actions/UsersAction';
+import Details from './Details';
+
 const {width, height} = Dimensions.get('window');
 
 
-export default class Repo extends Component{
+class Repo extends Component{
     constructor(props){
         super(props)
         this.state={
@@ -23,22 +27,21 @@ export default class Repo extends Component{
         }
       }
       componentDidMount(){
-        this.getUsers(this.props.route.params.item);
-        console.log(this.state.users)
+        //this.getUsers();
+        this.props.reposFetch(this.props.route.params.item.login);
+    
+        this.setState({
+          data: this.props.followers,
+          dataTemp : this.props.followers
+        })
       }
-      getUsers = (item) => {
     
-        this.setState({loading:true});
-    
-        fetch("https://api.github.com/users/"+ item.login + '/repos')
-        .then(res => res.json())
-        .then(res =>{
-          this.setState({
-            data : res,
-            dataTemp: res,
-            loading: false
-          })
-        });  
+      UNSAFE_componentWillReceiveProps(nextProps){
+        console.log(nextProps)
+        this.setState({
+          data: nextProps.followers,
+          dataTemp : nextProps.followers
+        })
       }
       
       separator = () => {
@@ -48,15 +51,12 @@ export default class Repo extends Component{
       };
       
     render(){
-        if(this.state.loading){
-            return(
-              <View>
-                <Text>No repositories found!</Text>
-              </View>
-            )
-          }
           return(
             <View style = {styles.container}>
+                <Details
+                  head="Repositories of: "
+                  content = {this.props.route.params.item.name}
+                />
                 <FlatList
                 ItemSeparatorComponent={() => this.separator()}
                   data ={this.state.data}
@@ -91,3 +91,11 @@ const styles = StyleSheet.create({
         fontSize: 17,
     }
   })
+
+  const mapStateToProps = state => {
+    const followers = state.users;
+  
+    return {followers}
+  }
+  
+  export default connect(mapStateToProps,{reposFetch})(Repo);

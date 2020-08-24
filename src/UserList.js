@@ -13,6 +13,8 @@ import {
 import { Avatar } from 'react-native-elements';
 
 const {width, height} = Dimensions.get('window');
+import {connect} from 'react-redux';
+import {usersFetch} from './actions/UsersAction';
 
 class UserList extends Component{
   constructor(props){
@@ -24,23 +26,23 @@ class UserList extends Component{
         usersTemp:[]
     }
   }
+
   componentDidMount(){
-    this.getUsers();
-    console.log(this.state.users)
+    //this.getUsers();
+    this.props.usersFetch();
+
+    this.setState({
+      users: this.props.users,
+      usersTemp : this.props.users
+    })
   }
-  getUsers = () => {
 
-    this.setState({loading:true});
-
-    fetch("https://api.github.com/users")
-    .then(res => res.json())
-    .then(res =>{
-      this.setState({
-        users : res,
-        usersTemp: res,
-        loading: false
-      })
-    });  
+  UNSAFE_componentWillReceiveProps(nextProps){
+    
+    this.setState({
+      users: nextProps.users,
+      usersTemp : nextProps.users
+    })
   }
 
   filterItem = event => {
@@ -71,13 +73,6 @@ class UserList extends Component{
 
 
   render(){ 
-    if(this.state.loading){
-      return(
-        <View>
-          <Text>Unloading users!</Text>
-        </View>
-      )
-    }
     return(
       <View style = {styles.container}>
         <StatusBar barStyle="light-content" backgroundColor="#7CE3B5" />
@@ -141,4 +136,10 @@ const styles = StyleSheet.create({
   }
 })
 
-export default UserList;
+const mapStateToProps = state => {
+  const users = state.users;
+
+  return {users}
+}
+
+export default connect(mapStateToProps,{usersFetch})(UserList);

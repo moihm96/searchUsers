@@ -13,7 +13,8 @@ import {
 import { Avatar } from 'react-native-elements';
 
 const {width, height} = Dimensions.get('window');
-
+import {connect} from 'react-redux';
+import {followersFetch} from './actions/UsersAction'
 class FollowerList extends Component{
   constructor(props){
     super(props)
@@ -24,23 +25,22 @@ class FollowerList extends Component{
         usersTemp:[]
     }
   }
+  
   componentDidMount(){
-    this.getUsers(this.props.route.params.item);
-    console.log(this.state.users)
+    this.props.followersFetch(this.props.route.params.item.login);
+
+    this.setState({
+      users: this.props.users,
+      usersTemp : this.props.users
+    })
   }
-  getUsers = (item) => {
 
-    this.setState({loading:true});
-
-    fetch("https://api.github.com/users/"+ item.login+ "/followers")
-    .then(res => res.json())
-    .then(res =>{
-      this.setState({
-        users : res,
-        usersTemp : res,
-        loading: false
-      })
-    });  
+  UNSAFE_componentWillReceiveProps(nextProps){
+    
+    this.setState({
+      users: nextProps.users,
+      usersTemp : nextProps.users
+    })
   }
 
   filterItem = event => {
@@ -140,5 +140,10 @@ const styles = StyleSheet.create({
     color: '#000',
   }
 })
+const mapStateToProps = state => {
+  const users = state.users;
 
-export default FollowerList;
+  return {users}
+}
+
+export default connect(mapStateToProps,{followersFetch})(FollowerList);
